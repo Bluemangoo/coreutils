@@ -18,10 +18,6 @@ env:
 on:
   pull_request:
   push:
-    tags:
-      - '*'
-    branches:
-      - main
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -638,7 +634,7 @@ jobs:
         if [ "${CARGO_CMD}" = 'cross' ] && [ ! -e "Cross.toml" ] ; then
           printf "[build.env]\npassthrough = [\"CI\", \"RUST_BACKTRACE\", \"CARGO_TERM_COLOR\"]\n" > Cross.toml
           if [[ "${{ matrix.job.target }}" == *"linux"* ]]; then
-            printf "[target.${{ matrix.job.target }}]\npre-build = [\"apt-get update\", \"apt-get -yq --no-install-suggests --no-install-recommends install libsystemd-dev\"]\n" >> Cross.toml
+            printf "[target.${{ matrix.job.target }}]\npre-build = [\"apt-get update\", \"apt-get -yq --no-install-suggests --no-install-recommends install libsystemd-dev:$DPKG_ARCH\"]\n" >> Cross.toml
           fi
         fi
         # * executable for `strip`?
